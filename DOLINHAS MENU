@@ -14,7 +14,7 @@ gui.ResetOnSpawn = false
 gui.IgnoreGuiInset = true
 gui.Parent = player:WaitForChild("PlayerGui")
 
-local green = Color3.fromRGB(255, 48, 58)
+local RED = Color3.fromRGB(255, 48, 58)
 local DARK = Color3.fromRGB(16, 16, 19)
 local PANEL = Color3.fromRGB(25, 25, 30)
 local WHITE = Color3.fromRGB(245, 245, 245)
@@ -35,7 +35,7 @@ end
 
 local function outline(obj)
 	create("UIStroke", {
-		Color = green,
+		Color = RED,
 		Thickness = 1,
 		Transparency = 0.3
 	}, obj)
@@ -45,7 +45,7 @@ end
 local main = create("Frame", {
 	Size = UDim2.fromOffset(760, 490),
 	Position = UDim2.new(0.5, -380, 0.5, -245),
-	BackgroundColor3 = white,
+	BackgroundColor3 = DARK,
 	BorderSizePixel = 0,
 	ClipsDescendants = true
 }, gui)
@@ -64,7 +64,7 @@ create("TextLabel", {
 	Size = UDim2.new(1, -110, 1, 0),
 	BackgroundTransparency = 1,
 	Text = "DOLINHAS MENU  |  VISUAL INTERFACE",
-	TextColor3 = green,
+	TextColor3 = RED,
 	TextSize = 18,
 	Font = Enum.Font.GothamBold,
 	TextXAlignment = Enum.TextXAlignment.Left
@@ -93,8 +93,8 @@ local reopen = create("TextButton", {
 	Size = UDim2.fromOffset(145, 40),
 	Position = UDim2.new(0, 18, 0.5, 0),
 	BackgroundColor3 = DARK,
-	Text = "dolinhas menu  +",
-	TextColor3 = green,
+	Text = "DOLINHAS MENU  +",
+	TextColor3 = RED,
 	TextSize = 14,
 	Font = Enum.Font.GothamBold,
 	Visible = false,
@@ -241,7 +241,7 @@ local function addNav(name, symbol, order)
 	end)
 end
 
-addNav("Início GG", "◈", 1)
+addNav("Início", "◈", 1)
 addNav("Aimbot DOLINHAS", "◎", 2)
 addNav("Visual", "▣", 3)
 addNav("Configurações", "⚙", 4)
@@ -258,7 +258,7 @@ local function heading(page, text)
 		Size = UDim2.new(1, 0, 0, 42),
 		BackgroundTransparency = 1,
 		Text = text,
-		TextColor3 = green,
+		TextColor3 = RED,
 		TextSize = 23,
 		Font = Enum.Font.GothamBold,
 		TextXAlignment = Enum.TextXAlignment.Left
@@ -349,11 +349,10 @@ local function toggle(page, title, description, callback)
 	end)
 end
 
-heading(home, "QUEM XITA
-NAO BRILHA")
+heading(home, "Bem-vindo ao DOLINHAS")
 card(home, "◈ Interface", "Tema preto e vermelho com painel arrastável.")
 card(home, "▣ Visual", "Ative o ESP na aba Visual.")
-card(home, "⚙ Controles", "Use — para minimiza dolinhas menu + para reabrir.")
+card(home, "⚙ Controles", "Use — para minimizar e DOLINHAS MENU + para reabrir.")
 
 heading(aim, "Aimbot PT")
 card(aim, "Controle de Mira", "Fixa 100% na cabeça enquanto o boneco anda (300 studs).")
@@ -523,9 +522,9 @@ heading(settings, "Configurações")
 card(settings, "Interface", "Arraste o menu pela barra superior.")
 card(settings, "Minimizar", "O botão — esconde o painel sem fechar o menu.")
 
-heading(about, "Sobre o PT MENU")
-card(about, "dolinhas menu", "Interface em Luau para sua experiência Roblox.")
-card(about, "Versão", "quem xita nao brilha")
+heading(about, "Sobre o DOLINHAS MENU")
+card(about, "DOLINHA", "Interface em Luau para sua experiência Roblox.")
+card(about, "Versão", "QUEM XITA NAO BRILHA")
 
 Players.PlayerRemoving:Connect(function(target)
 	clearESP(target)
