@@ -353,7 +353,7 @@ heading(home, "QUEM XITA
 NAO BRILHA")
 card(home, "◈ Interface", "Tema preto e vermelho com painel arrastável.")
 card(home, "▣ Visual", "Ative o ESP na aba Visual.")
-card(home, "⚙ Controles", "Use — para minimiza  dolinhas  + para reabrir.")
+card(home, "⚙ Controles", "Use — para minimiza dolinhas menu + para reabrir.")
 
 heading(aim, "Aimbot PT")
 card(aim, "Controle de Mira", "Fixa 100% na cabeça enquanto o boneco anda (300 studs).")
