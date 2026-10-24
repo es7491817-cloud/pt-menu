@@ -1,0 +1,539 @@
+-- DOLINHAS MENU | LocalScript com Aimbot 100% Fixado na Cabeça (Botão Esquerdo e 300 Studs)
+-- StarterPlayer > StarterPlayerScripts
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Workspace = game:GetService("Workspace")
+
+local player = Players.LocalPlayer
+local camera = Workspace.CurrentCamera
+local gui = Instance.new("ScreenGui")
+gui.Name = "DOLINHAS_MENU"
+gui.ResetOnSpawn = false
+gui.IgnoreGuiInset = true
+gui.Parent = player:WaitForChild("PlayerGui")
+
+local RED = Color3.fromRGB(255, 48, 58)
+local DARK = Color3.fromRGB(16, 16, 19)
+local PANEL = Color3.fromRGB(25, 25, 30)
+local WHITE = Color3.fromRGB(245, 245, 245)
+local GRAY = Color3.fromRGB(160, 160, 170)
+
+local function create(class, props, parent)
+	local obj = Instance.new(class)
+	for k, v in pairs(props) do obj[k] = v end
+	obj.Parent = parent
+	return obj
+end
+
+local function round(obj, radius)
+	create("UICorner", {
+		CornerRadius = UDim.new(0, radius or 8)
+	}, obj)
+end
+
+local function outline(obj)
+	create("UIStroke", {
+		Color = RED,
+		Thickness = 1,
+		Transparency = 0.3
+	}, obj)
+end
+
+-- JANELA
+local main = create("Frame", {
+	Size = UDim2.fromOffset(760, 490),
+	Position = UDim2.new(0.5, -380, 0.5, -245),
+	BackgroundColor3 = DARK,
+	BorderSizePixel = 0,
+	ClipsDescendants = true
+}, gui)
+round(main, 10)
+outline(main)
+
+-- BARRA SUPERIOR
+local top = create("Frame", {
+	Size = UDim2.new(1, 0, 0, 48),
+	BackgroundColor3 = PANEL,
+	BorderSizePixel = 0
+}, main)
+
+create("TextLabel", {
+	Position = UDim2.fromOffset(15, 0),
+	Size = UDim2.new(1, -110, 1, 0),
+	BackgroundTransparency = 1,
+	Text = "DOLINHAS MENU  |  VISUAL INTERFACE",
+	TextColor3 = RED,
+	TextSize = 18,
+	Font = Enum.Font.GothamBold,
+	TextXAlignment = Enum.TextXAlignment.Left
+}, top)
+
+local function topButton(text, x, color)
+	local b = create("TextButton", {
+		Position = UDim2.new(1, x, 0, 9),
+		Size = UDim2.fromOffset(32, 30),
+		BackgroundColor3 = color or DARK,
+		Text = text,
+		TextColor3 = WHITE,
+		TextSize = 17,
+		Font = Enum.Font.GothamBold,
+		BorderSizePixel = 0
+	}, top)
+	round(b, 6)
+	return b
+end
+
+local minimize = topButton("—", -76)
+local close = topButton("×", -38, RED)
+
+-- BOTÃO DE REABRIR
+local reopen = create("TextButton", {
+	Size = UDim2.fromOffset(145, 40),
+	Position = UDim2.new(0, 18, 0.5, 0),
+	BackgroundColor3 = DARK,
+	Text = "PT MENU  +",
+	TextColor3 = RED,
+	TextSize = 14,
+	Font = Enum.Font.GothamBold,
+	Visible = false,
+	BorderSizePixel = 0
+}, gui)
+round(reopen, 8)
+outline(reopen)
+
+minimize.MouseButton1Click:Connect(function()
+	main.Visible = false
+	reopen.Visible = true
+end)
+
+reopen.MouseButton1Click:Connect(function()
+	main.Visible = true
+	reopen.Visible = false
+end)
+
+close.MouseButton1Click:Connect(function()
+	gui:Destroy()
+end)
+
+-- ARRASTAR A JANELA
+local dragging = false
+local dragStart
+local startPosition
+
+top.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = input.Position
+		startPosition = main.Position
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+		local delta = input.Position - dragStart
+		main.Position = UDim2.new(
+			startPosition.X.Scale,
+			startPosition.X.Offset + delta.X,
+			startPosition.Y.Scale,
+			startPosition.Y.Offset + delta.Y
+		)
+	end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = false
+	end
+end)
+
+-- BARRA LATERAL
+local sidebar = create("Frame", {
+	Position = UDim2.fromOffset(0, 48),
+	Size = UDim2.new(0, 190, 1, -48),
+	BackgroundColor3 = Color3.fromRGB(11, 11, 14),
+	BorderSizePixel = 0
+}, main)
+
+create("TextLabel", {
+	Position = UDim2.fromOffset(10, 15),
+	Size = UDim2.new(1, -20, 0, 40),
+	BackgroundTransparency = 1,
+	Text = "DOLINHAS MENU",
+	TextColor3 = GREEN,
+	TextSize = 25,
+	Font = Enum.Font.GothamBlack
+}, sidebar)
+
+create("TextLabel", {
+	Position = UDim2.fromOffset(10, 51),
+	Size = UDim2.new(1, -20, 0, 20),
+	BackgroundTransparency = 1,
+	Text = "VISUAL INTERFACE",
+	TextColor3 = GRAY,
+	TextSize = 10,
+	Font = Enum.Font.Gotham
+}, sidebar)
+
+local content = create("Frame", {
+	Position = UDim2.fromOffset(202, 60),
+	Size = UDim2.new(1, -214, 1, -72),
+	BackgroundTransparency = 1,
+	ClipsDescendants = true
+}, main)
+
+local pages, navButtons = {}, {}
+
+local function makePage(name)
+	local page = create("ScrollingFrame", {
+		Name = name,
+		Size = UDim2.fromScale(1, 1),
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		ScrollBarThickness = 3,
+		ScrollBarImageColor3 = GREEN,
+		AutomaticCanvasSize = Enum.AutomaticSize.Y,
+		CanvasSize = UDim2.new(),
+		Visible = false
+	}, content)
+
+	create("UIListLayout", {
+		Padding = UDim.new(0, 10),
+		SortOrder = Enum.SortOrder.LayoutOrder
+	}, page)
+
+	create("UIPadding", {
+		PaddingTop = UDim.new(0, 5),
+		PaddingRight = UDim.new(0, 7),
+		PaddingBottom = UDim.new(0, 10)
+	}, page)
+
+	pages[name] = page
+	return page
+end
+
+local function showPage(name)
+	for n, page in pairs(pages) do
+		page.Visible = n == name
+	end
+	for n, btn in pairs(navButtons) do
+		btn.BackgroundColor3 = n == name and RED or PANEL
+	end
+end
+
+local function addNav(name, symbol, order)
+	local b = create("TextButton", {
+		Position = UDim2.fromOffset(9, 88 + (order - 1) * 46),
+		Size = UDim2.new(1, -18, 0, 38),
+		BackgroundColor3 = PANEL,
+		Text = symbol .. "    " .. name,
+		TextColor3 = WHITE,
+		TextSize = 13,
+		Font = Enum.Font.GothamMedium,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		BorderSizePixel = 0
+	}, sidebar)
+	round(b, 7)
+	navButtons[name] = b
+	b.MouseButton1Click:Connect(function()
+		showPage(name)
+	end)
+end
+
+addNav("Início", "◈", 1)
+addNav("Aimbot DOLINHAS", "◎", 2)
+addNav("Visual", "▣", 3)
+addNav("Configurações", "⚙", 4)
+addNav("Sobre", "ⓘ", 5)
+
+local home = makePage("Início")
+local aim = makePage("Aimbot DOLINHAS")
+local visual = makePage("Visual")
+local settings = makePage("Configurações")
+local about = makePage("Sobre")
+
+local function heading(page, text)
+	create("TextLabel", {
+		Size = UDim2.new(1, 0, 0, 42),
+		BackgroundTransparency = 1,
+		Text = text,
+		TextColor3 = RED,
+		TextSize = 23,
+		Font = Enum.Font.GothamBold,
+		TextXAlignment = Enum.TextXAlignment.Left
+	}, page)
+end
+
+local function card(page, title, description)
+	local f = create("Frame", {
+		Size = UDim2.new(1, 0, 0, 78),
+		BackgroundColor3 = PANEL,
+		BorderSizePixel = 0
+	}, page)
+	round(f, 8)
+
+	create("TextLabel", {
+		Position = UDim2.fromOffset(12, 8),
+		Size = UDim2.new(1, -20, 0, 24),
+		BackgroundTransparency = 1,
+		Text = title,
+		TextColor3 = WHITE,
+		TextSize = 14,
+		Font = Enum.Font.GothamBold,
+		TextXAlignment = Enum.TextXAlignment.Left
+	}, f)
+
+	create("TextLabel", {
+		Position = UDim2.fromOffset(12, 34),
+		Size = UDim2.new(1, -20, 0, 35),
+		BackgroundTransparency = 1,
+		Text = description,
+		TextColor3 = GRAY,
+		TextSize = 12,
+		TextWrapped = true,
+		Font = Enum.Font.Gotham,
+		TextXAlignment = Enum.TextXAlignment.Left
+	}, f)
+end
+
+local function toggle(page, title, description, callback)
+	local f = create("Frame", {
+		Size = UDim2.new(1, 0, 0, 72),
+		BackgroundColor3 = PANEL,
+		BorderSizePixel = 0
+	}, page)
+	round(f, 8)
+
+	create("TextLabel", {
+		Position = UDim2.fromOffset(12, 8),
+		Size = UDim2.new(1, -100, 0, 23),
+		BackgroundTransparency = 1,
+		Text = title,
+		TextColor3 = WHITE,
+		TextSize = 13,
+		Font = Enum.Font.GothamBold,
+		TextXAlignment = Enum.TextXAlignment.Left
+	}, f)
+
+	create("TextLabel", {
+		Position = UDim2.fromOffset(12, 33),
+		Size = UDim2.new(1, -100, 0, 27),
+		BackgroundTransparency = 1,
+		Text = description,
+		TextColor3 = GRAY,
+		TextSize = 10,
+		TextWrapped = true,
+		Font = Enum.Font.Gotham,
+		TextXAlignment = Enum.TextXAlignment.Left
+	}, f)
+
+	local enabled = false
+	local b = create("TextButton", {
+		Position = UDim2.new(1, -72, 0.5, -15),
+		Size = UDim2.fromOffset(60, 30),
+		BackgroundColor3 = Color3.fromRGB(55, 55, 62),
+		Text = "OFF",
+		TextColor3 = WHITE,
+		TextSize = 12,
+		Font = Enum.Font.GothamBold,
+		BorderSizePixel = 0
+	}, f)
+	round(b, 7)
+
+	b.MouseButton1Click:Connect(function()
+		enabled = not enabled
+		b.Text = enabled and "ON" or "OFF"
+		b.BackgroundColor3 = enabled and RED or Color3.fromRGB(55, 55, 62)
+		callback(enabled)
+	end)
+end
+
+heading(home, "Bem-vindo ao PT MENU")
+card(home, "◈ Interface", "Tema preto e vermelho com painel arrastável.")
+card(home, "▣ Visual", "Ative o ESP na aba Visual.")
+card(home, "⚙ Controles", "Use — para minimizar e PT MENU + para reabrir.")
+
+heading(aim, "Aimbot PT")
+card(aim, "Controle de Mira", "Fixa 100% na cabeça enquanto o boneco anda (300 studs).")
+
+-- LÓGICA DO AIMBOT (Fixado perfeitamente na cabeça)
+local aimbotEnabled = false
+local aimConnection = nil
+local isMouseDown = false
+local maxDistance = 300
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+	if input.UserInputType == Enum.UserInputType.MouseButton2 then
+		isMouseDown = true
+	end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton2 then
+		isMouseDown = false
+	end
+end)
+
+local function getClosestTarget()
+	local closestTarget = nil
+	local shortestDistance = maxDistance
+
+	local localCharacter = player.Character
+	if not localCharacter or not localCharacter:FindFirstChild("HumanoidRootPart") then
+		return nil
+	end
+
+	local localPosition = localCharacter.HumanoidRootPart.Position
+
+	for _, object in ipairs(Workspace:GetDescendants()) do
+		if object:IsA("Humanoid") and object.Health > 0 then
+			local character = object.Parent
+			if character ~= localCharacter then
+				local targetHead = character:FindFirstChild("Head")
+				if targetHead then
+					local distance = (targetHead.Position - localPosition).Magnitude
+					if distance < shortestDistance then
+						shortestDistance = distance
+						closestTarget = targetHead
+					end
+				end
+			end
+		end
+	end
+
+	return closestTarget
+end
+
+toggle(aim, "Aimbot", "Fixa a mira na cabeça ao segurar o botão direito", function(state)
+	aimbotEnabled = state
+
+	if aimbotEnabled then
+		aimConnection = RunService.RenderStepped:Connect(function()
+			if isMouseDown then
+				local targetHead = getClosestTarget()
+				if targetHead then
+					-- Direciona a câmera diretamente para a cabeça sem nenhum atraso, mesmo se o boneco se mover
+					camera.CFrame = CFrame.new(camera.CFrame.Position, targetHead.Position)
+				end
+			end
+		end)
+	else
+		if aimConnection then
+			aimConnection:Disconnect()
+			aimConnection = nil
+		end
+	end
+end)
+
+toggle(aim, "FOV", "Círculo de alcance da mira", function(state)
+	-- Opcional
+end)
+
+heading(visual, "Visual")
+card(visual, "ESP", "Contorno, nome e distância dos personagens.")
+
+local espEnabled = false
+local espObjects = {}
+
+local function clearESP(target)
+	local objects = espObjects[target]
+	if objects then
+		for _, object in ipairs(objects) do
+			if object and object.Parent then
+				object:Destroy()
+			end
+		end
+		espObjects[target] = nil
+	end
+end
+
+local function updateESP()
+	for _, target in ipairs(Players:GetPlayers()) do
+		if target ~= player then
+			local character = target.Character
+			local root = character and character:FindFirstChild("HumanoidRootPart")
+			local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+
+			if character and root and humanoid and humanoid.Health > 0 then
+				local objects = espObjects[target]
+
+				if not objects or objects[1].Parent ~= character then
+					clearESP(target)
+
+					local highlight = Instance.new("Highlight")
+					highlight.Name = "PT_ESP_Highlight"
+					highlight.FillColor = RED
+					highlight.OutlineColor = WHITE
+					highlight.FillTransparency = 0.7
+					highlight.OutlineTransparency = 0
+					highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+					highlight.Parent = character
+
+					local billboard = Instance.new("BillboardGui")
+					billboard.Name = "PT_ESP_Info"
+					billboard.Adornee = root
+					billboard.Size = UDim2.fromOffset(220, 30)
+					billboard.StudsOffset = Vector3.new(0, 3, 0)
+					billboard.AlwaysOnTop = true
+					billboard.Parent = character
+
+					local label = Instance.new("TextLabel")
+					label.Name = "Info"
+					label.Size = UDim2.fromScale(1, 1)
+					label.BackgroundTransparency = 1
+					label.TextColor3 = WHITE
+					label.TextStrokeTransparency = 0.2
+					label.TextSize = 13
+					label.Font = Enum.Font.GothamBold
+					label.Parent = billboard
+
+					espObjects[target] = {highlight, billboard}
+				end
+
+				local myCharacter = player.Character
+				local myRoot = myCharacter and myCharacter:FindFirstChild("HumanoidRootPart")
+				local billboard = espObjects[target][2]
+				local label = billboard:FindFirstChild("Info")
+
+				if myRoot and label then
+					local distance = math.floor((myRoot.Position - root.Position).Magnitude)
+					label.Text = target.Name .. " | " .. distance .. " studs"
+				end
+			else
+				clearESP(target)
+			end
+		end
+	end
+end
+
+toggle(visual, "ESP", "Contorno vermelho, nome e distância", function(state)
+	espEnabled = state
+	if not state then
+		for target in pairs(espObjects) do
+			clearESP(target)
+		end
+	else
+		updateESP()
+	end
+end)
+
+heading(settings, "Configurações")
+card(settings, "Interface", "Arraste o menu pela barra superior.")
+card(settings, "Minimizar", "O botão — esconde o painel sem fechar o menu.")
+
+heading(about, "Sobre o PT MENU")
+card(about, "PT MENU", "Interface em Luau para sua experiência Roblox.")
+card(about, "Versão", "1.0")
+
+Players.PlayerRemoving:Connect(function(target)
+	clearESP(target)
+end)
+
+RunService.Heartbeat:Connect(function()
+	if espEnabled and gui.Parent then
+		updateESP()
+	end
+end)
+
+showPage("Início")
