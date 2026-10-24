@@ -14,7 +14,7 @@ gui.ResetOnSpawn = false
 gui.IgnoreGuiInset = true
 gui.Parent = player:WaitForChild("PlayerGui")
 
-local RED = Color3.fromRGB(255, 48, 58)
+local green = Color3.fromRGB(255, 48, 58)
 local DARK = Color3.fromRGB(16, 16, 19)
 local PANEL = Color3.fromRGB(25, 25, 30)
 local WHITE = Color3.fromRGB(245, 245, 245)
@@ -93,8 +93,8 @@ local reopen = create("TextButton", {
 	Size = UDim2.fromOffset(145, 40),
 	Position = UDim2.new(0, 18, 0.5, 0),
 	BackgroundColor3 = DARK,
-	Text = "PT MENU  +",
-	TextColor3 = RED,
+	Text = "dolinhas menu  +",
+	TextColor3 = green,
 	TextSize = 14,
 	Font = Enum.Font.GothamBold,
 	Visible = false,
@@ -523,8 +523,8 @@ card(settings, "Interface", "Arraste o menu pela barra superior.")
 card(settings, "Minimizar", "O botão — esconde o painel sem fechar o menu.")
 
 heading(about, "Sobre o PT MENU")
-card(about, "PT MENU", "Interface em Luau para sua experiência Roblox.")
-card(about, "Versão", "1.0")
+card(about, "dolinhas menu", "Interface em Luau para sua experiência Roblox.")
+card(about, "Versão", "quem xita nao brilha")
 
 Players.PlayerRemoving:Connect(function(target)
 	clearESP(target)
