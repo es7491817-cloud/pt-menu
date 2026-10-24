@@ -35,7 +35,7 @@ end
 
 local function outline(obj)
 	create("UIStroke", {
-		Color = RED,
+		Color = green,
 		Thickness = 1,
 		Transparency = 0.3
 	}, obj)
@@ -45,7 +45,7 @@ end
 local main = create("Frame", {
 	Size = UDim2.fromOffset(760, 490),
 	Position = UDim2.new(0.5, -380, 0.5, -245),
-	BackgroundColor3 = DARK,
+	BackgroundColor3 = white,
 	BorderSizePixel = 0,
 	ClipsDescendants = true
 }, gui)
@@ -64,7 +64,7 @@ create("TextLabel", {
 	Size = UDim2.new(1, -110, 1, 0),
 	BackgroundTransparency = 1,
 	Text = "DOLINHAS MENU  |  VISUAL INTERFACE",
-	TextColor3 = RED,
+	TextColor3 = green,
 	TextSize = 18,
 	Font = Enum.Font.GothamBold,
 	TextXAlignment = Enum.TextXAlignment.Left
@@ -258,7 +258,7 @@ local function heading(page, text)
 		Size = UDim2.new(1, 0, 0, 42),
 		BackgroundTransparency = 1,
 		Text = text,
-		TextColor3 = RED,
+		TextColor3 = green,
 		TextSize = 23,
 		Font = Enum.Font.GothamBold,
 		TextXAlignment = Enum.TextXAlignment.Left
@@ -349,7 +349,7 @@ local function toggle(page, title, description, callback)
 	end)
 end
 
-heading(home, "Bem-vindo ao PT MENU")
+heading(home, "Bem-vindo ao dolinhas menu ")
 card(home, "◈ Interface", "Tema preto e vermelho com painel arrastável.")
 card(home, "▣ Visual", "Ative o ESP na aba Visual.")
 card(home, "⚙ Controles", "Use — para minimizar e PT MENU + para reabrir.")
