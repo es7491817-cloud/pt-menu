@@ -241,7 +241,7 @@ local function addNav(name, symbol, order)
 	end)
 end
 
-addNav("Início", "◈", 1)
+addNav("Início GG", "◈", 1)
 addNav("Aimbot DOLINHAS", "◎", 2)
 addNav("Visual", "▣", 3)
 addNav("Configurações", "⚙", 4)
